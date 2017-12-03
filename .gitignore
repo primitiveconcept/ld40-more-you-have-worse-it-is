@@ -1,0 +1,37 @@
+/.vs
+/.svn
+/Library
+/Temp
+/Build
+/Builds
+/Assets/_local
+/Assets/_local.meta
+/Base Art
+/WorkFiles
+/*.userprefs
+/obj
+/etc
+
+
+Thumbs.db
+Thumbs.db.meta
+*_BACKUP_*
+*_REMOTE_*
+*_LOCAL_*
+*_BASE_*
+
+===
+Let MonoDevelop and Visual Studio handle their own stuff.
+===
+/*.csproj
+/*.sln
+/*.suo
+/.vs
+*.orig*
+*.log*
+
+===
+Third-Party Assets
+/Assets/uIntelliSense
+/Assets/uIntelliSense.meta
+/logRunSetup.txt
