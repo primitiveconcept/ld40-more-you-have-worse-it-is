@@ -36,6 +36,12 @@
 		}
 
 
+		public TileBase Tile
+		{
+			get { return this.tile; }
+		}
+
+
 		public Tilemap Tilemap
 		{
 			get { return this.tilemap; }
@@ -48,7 +54,7 @@
 			if (this.broth == null)
 				this.broth = GetComponent<Broth>();
 
-			this.broth.Randomize();
+			//this.broth.Randomize();
 			Debug.Log(this.broth);
 		}
 

@@ -144,31 +144,31 @@
 				foreach (BrothViewControl broth in this.broths)
 				{
 					broth.Broth[cell.x, cell.y] = false;
-					broth.Broth.NextGeneration[cell.x, cell.y] = false;
+					broth.Broth.NextCells[cell.x, cell.y] = false;
 
 					var maxIndex = broth.Broth.Size - 1;
 					if (cell.x > 0)
 					{
 						broth.Broth[cell.x - 1, cell.y] = false;
-						broth.Broth.NextGeneration[cell.x - 1, cell.y] = false;
+						broth.Broth.NextCells[cell.x - 1, cell.y] = false;
 					}
 
 					if (cell.y > 0)
 					{
 						broth.Broth[cell.x, cell.y - 1] = false;
-						broth.Broth.NextGeneration[cell.x, cell.y - 1] = false;
+						broth.Broth.NextCells[cell.x, cell.y - 1] = false;
 					}
 
 					if (cell.x < maxIndex)
 					{
 						broth.Broth[cell.x + 1, cell.y] = false;
-						broth.Broth.NextGeneration[cell.x + 1, cell.y] = false;
+						broth.Broth.NextCells[cell.x + 1, cell.y] = false;
 					}
 
 					if (cell.y < maxIndex)
 					{
 						broth.Broth[cell.x, cell.y + 1] = false;
-						broth.Broth.NextGeneration[cell.x, cell.y + 1] = false;
+						broth.Broth.NextCells[cell.x, cell.y + 1] = false;
 					}
 						
 				}

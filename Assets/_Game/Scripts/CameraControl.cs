@@ -36,7 +36,7 @@
 
 		[Header("Components")]
 		[SerializeField]
-		private Camera camera;
+		private new Camera camera;
 
 		[SerializeField]
 		private PostProcessingProfile effects;
@@ -53,7 +53,7 @@
 			this.effects = Instantiate(postProcessingBehaviour.profile);
 			postProcessingBehaviour.profile = this.effects;
 
-			this.camera.orthographicSize = (this.minZoomDistance + this.maxZoomDistance) / 2;
+			this.camera.orthographicSize = (this.minZoomDistance);
 			this.originalCameraPosition = this.transform.localPosition;
 		}
 

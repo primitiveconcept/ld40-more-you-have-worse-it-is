@@ -8,9 +8,12 @@
 		[SerializeField]
 		private bool beingDragged = false;
 
-		private Camera camera; //For storing the camera
-		private RaycastHit2D draggedObject; //For storing the puzzle piece we are dragging
+		[SerializeField]
+		private string requiredTool;
 
+		private new Camera camera;
+		private GameObject draggedObject;
+		private GameSystem gameSystem;
 
 		#region Properties
 		public bool BeingDragged
@@ -19,7 +22,8 @@
 			set { this.beingDragged = value; }
 		}
 
-		public RaycastHit2D DraggedObject
+
+		public GameObject DraggedObject
 		{
 			get { return this.draggedObject; }
 			set { this.draggedObject = value; }
@@ -30,46 +34,40 @@
 		public void Awake()
 		{
 			this.camera = Camera.main;
+			this.gameSystem = FindObjectOfType<GameSystem>();
 		}
 
 
-		#region Helper Methods
 		public void Update()
 		{
-			//Store our mouse position at the beginning of the frame for use later
-			Vector2 mousePos = this.camera.ScreenToWorldPoint(Input.mousePosition);
-
-			//Did we mouse click? "Fire1" is set to use Mouse0 in Edit > Project Settings > Input Manager
-			if (Input.GetButtonDown("Fire1"))
+			if (this.gameSystem.CurrentTool != null
+				&& this.gameSystem.CurrentTool.Name != this.requiredTool)
 			{
-				//Shoot a ray at the exact position of our mouse, and store the returned result into draggedObject
-				this.draggedObject = Physics2D.Raycast(mousePos, Vector2.zero);
+				return;
 			}
+			
+			Vector2 mousePosition = this.camera.ScreenToWorldPoint(Input.mousePosition);
 
-			//Are we holding the mouse button down?
-			if (Input.GetButton("Fire1"))
-			{
-				//Is the collider of our draggedObject RaycastHit2D variable NOT null?
-				if (this.draggedObject.collider != null)
-				{
-					this.beingDragged = true;
-					//Set the position of our draggedObject to be equal to our mouse position
-					this.draggedObject.collider.transform.position = mousePos;
-
-					//Optional: If using Z-Axis to determine sprite render order, use these lines instead
-					//Transform puzzTrans = draggedObject.collider.transform;
-					//puzzTrans.position = new Vector3(mousePos.x, mousePos.y, puzzTrans.position.z);
-				}
-			}
-
-			//Did we let go of the mouse button?
 			if (Input.GetButtonUp("Fire1"))
 			{
-				//Reset the draggedObject to null
-				this.draggedObject = new RaycastHit2D();
 				this.beingDragged = false;
+				this.draggedObject = null;
+				return;
+			}
+
+			if (Input.GetButtonDown("Fire1"))
+			{
+				var hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+				if (hit.collider != null)
+					this.draggedObject = hit.collider.gameObject;
+			}
+			
+			if (Input.GetButton("Fire1")
+				&& this.draggedObject != null)
+			{
+					this.beingDragged = true;
+					this.draggedObject.transform.position = mousePosition;
 			}
 		}
-		#endregion
 	}
 }

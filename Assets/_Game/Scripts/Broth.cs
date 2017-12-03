@@ -7,24 +7,25 @@
 
 	public class Broth : MonoBehaviour
 	{
-		private Action<bool[,]> nextGenerationCompleted;
-
 		[SerializeField]
 		private int size;
 
-		private bool[,] broth;
-		private bool[,] nextGeneration;
-		private Coroutine processTask;
+		private bool[,] currentCells;
+		private bool[,] nextCells;
+		private int generation;
 
 
 		#region Properties
-		public bool[,] NextGeneration
+		public int Generation
 		{
-			get { return this.nextGeneration; }
+			get { return this.generation; }
 		}
 
 
-		public int Generation { get; private set; }
+		public bool[,] NextCells
+		{
+			get { return this.nextCells; }
+		}
 
 
 		public int Size
@@ -35,8 +36,8 @@
 
 		public bool this[int x, int y]
 		{
-			get { return this.broth[x, y]; }
-			set { this.broth[x, y] = value; }
+			get { return this.currentCells[x, y]; }
+			set { this.currentCells[x, y] = value; }
 		}
 		#endregion
 
@@ -46,8 +47,50 @@
 			if (this.size < 0)
 				throw new ArgumentOutOfRangeException("Size must be greater than zero");
 
-			this.broth = new bool[this.size, this.size];
-			this.nextGeneration = new bool[this.size, this.size];
+			this.currentCells = new bool[this.size, this.size];
+			this.nextCells = new bool[this.size, this.size];
+		}
+
+
+		public void ProcessNextGeneration()
+		{
+			for (int x = 0; x < this.size; x++)
+			{
+				for (int y = 0; y < this.size; y++)
+				{
+					int livingAdjacentCells = GetAdjacent(x, y, -1, 0)
+											+ GetAdjacent(x, y, -1, 1)
+											+ GetAdjacent(x, y, 0, 1)
+											+ GetAdjacent(x, y, 1, 1)
+											+ GetAdjacent(x, y, 1, 0)
+											+ GetAdjacent(x, y, 1, -1)
+											+ GetAdjacent(x, y, 0, -1)
+											+ GetAdjacent(x, y, -1, -1);
+
+					bool shouldLive = false;
+					bool isAlive = this.currentCells[x, y];
+
+					if (isAlive
+						&& (livingAdjacentCells == 2 || livingAdjacentCells == 3))
+					{
+						shouldLive = true;
+					}
+					else if (!isAlive
+							&& livingAdjacentCells == 3)
+					{
+						shouldLive = true;
+					}
+
+					this.nextCells[x, y] = shouldLive;
+				}
+			}
+
+			// when a generation has completed
+			// now flip the back buffer so we can start processing on the next generation
+			bool[,] flip = this.nextCells;
+			this.nextCells = this.currentCells;
+			this.currentCells = flip;
+			this.generation++;
 		}
 
 
@@ -61,13 +104,6 @@
 					this[x, y] = random == 1;
 				}
 			}
-		}
-
-
-		public bool ToggleCell(int x, int y)
-		{
-			bool currentValue = this.broth[x, y];
-			return this.broth[x, y] = !currentValue;
 		}
 
 
@@ -92,59 +128,25 @@
 
 
 		#region Helper Methods
-		private static int IsNeighborAlive(bool[,] world, int size, int x, int y, int offsetx, int offsety)
+		private int GetAdjacent(int x, int y, int offsetx, int offsety)
 		{
-			int result = 0;
-
 			int proposedOffsetX = x + offsetx;
 			int proposedOffsetY = y + offsety;
-			bool outOfBounds = proposedOffsetX < 0 || proposedOffsetX >= size | proposedOffsetY < 0 || proposedOffsetY >= size;
+
+			bool outOfBounds =
+				proposedOffsetX < 0
+				|| proposedOffsetX >= this.size
+				| proposedOffsetY < 0
+				|| proposedOffsetY >= this.size;
+
 			if (!outOfBounds)
 			{
-				result = world[x + offsetx, y + offsety] ? 1 : 0;
+				return this.currentCells[x + offsetx, y + offsety]
+					? 1
+					: 0;
 			}
-			return result;
-		}
 
-
-		public void ProcessNextGeneration()
-		{
-			for (int x = 0; x < this.size; x++)
-			{
-				for (int y = 0; y < this.size; y++)
-				{
-					int numberOfNeighbors = IsNeighborAlive(this.broth, this.Size, x, y, -1, 0)
-											+ IsNeighborAlive(this.broth, this.Size, x, y, -1, 1)
-											+ IsNeighborAlive(this.broth, this.Size, x, y, 0, 1)
-											+ IsNeighborAlive(this.broth, this.Size, x, y, 1, 1)
-											+ IsNeighborAlive(this.broth, this.Size, x, y, 1, 0)
-											+ IsNeighborAlive(this.broth, this.Size, x, y, 1, -1)
-											+ IsNeighborAlive(this.broth, this.Size, x, y, 0, -1)
-											+ IsNeighborAlive(this.broth, this.Size, x, y, -1, -1);
-
-					bool shouldLive = false;
-					bool isAlive = this.broth[x, y];
-
-					if (isAlive && (numberOfNeighbors == 2 || numberOfNeighbors == 3))
-					{
-						shouldLive = true;
-					}
-					else if (!isAlive
-							&& numberOfNeighbors == 3) // zombification
-					{
-						shouldLive = true;
-					}
-
-					this.nextGeneration[x, y] = shouldLive;
-				}
-			}
-			
-			// when a generation has completed
-			// now flip the back buffer so we can start processing on the next generation
-			bool[,] flip = this.nextGeneration;
-			this.nextGeneration = this.broth;
-			this.broth = flip;
-			this.Generation++;
+			return 0;
 		}
 		#endregion
 	}

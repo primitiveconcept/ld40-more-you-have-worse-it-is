@@ -13,10 +13,17 @@
 		private Draggable draggable;
 
 		private Vector3 directionalForce;
-		private Rigidbody2D rigidbody2D;
+		private new Rigidbody2D rigidbody2D;
 
 
 		#region Properties
+		public Vector3 DirectionalForce
+		{
+			get { return this.directionalForce; }
+			set { this.directionalForce = value; }
+		}
+
+
 		public Draggable Draggable
 		{
 			get { return this.draggable; }
@@ -27,13 +34,6 @@
 		{
 			get { return this.health; }
 			set { this.health = value; }
-		}
-
-
-		public Vector3 DirectionalForce
-		{
-			get { return this.directionalForce; }
-			set { this.directionalForce = value; }
 		}
 		#endregion
 
@@ -60,7 +60,6 @@
 			Vector3Int lowerLeft = gridCoordinate + Direction.LowerLeftVector;
 			Vector3Int lowerRight = gridCoordinate + Direction.LowerRightVector;
 
-			int moveDirection = -1;
 			int[] cells = new int[9];
 			for (int i = 0; i < broths.Length; i++)
 			{
@@ -79,7 +78,7 @@
 			return cells;
 		}
 
-		
+
 		public void Update()
 		{
 			this.rigidbody2D.angularVelocity = 360 * 8;
@@ -96,9 +95,10 @@
 			else
 				this.rigidbody2D.AddRelativeForce(this.directionalForce * 1);
 
+			var scale = 0.5f + (0.5f * this.health);
 			Vector3 targetScale = new Vector3(
-				this.health,
-				this.health,
+				scale,
+				scale,
 				1);
 			iTween.ScaleTo(this.gameObject, targetScale, 1);
 		}
