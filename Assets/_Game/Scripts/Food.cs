@@ -5,18 +5,14 @@
 
 	public class Food : MonoBehaviour
 	{
-		private Camera camera;
 		private BrothViewControl[] broths;
 		private Grid grid;
-		private Draggable draggable;
 
 
 		public void Awake()
 		{
-			this.camera = Camera.main;
 			this.broths = FindObjectsOfType<BrothViewControl>();
 			this.grid = this.broths[0].Tilemap.layoutGrid;
-			this.draggable = GetComponent<Draggable>();
 		}
 
 

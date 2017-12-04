@@ -35,7 +35,7 @@
 		[SerializeField]
 		private Tool[] tools;
 
-		private Camera camera;
+		private new Camera camera;
 		private Tool currentTool;
 		private Dictionary<string, Tool> toolsIndex;
 		private BrothViewControl[] broths;
@@ -76,6 +76,10 @@
 				this.heat = 0;
 			if (this.heat > 2)
 				this.heat = 2;
+
+			if (this.heat >= 2)
+				ShowGameOver("The machine has overheated.\n\n" +
+							"Game Over");
 
 			float bacteriaSpeed = HeatToSpeed(this.heat);
 
@@ -202,12 +206,6 @@
 		}
 
 
-		/// <summary>
-		/// Fades the specified image to the target opacity and duration.
-		/// </summary>
-		/// <param name="target">Target.</param>
-		/// <param name="opacity">Opacity.</param>
-		/// <param name="duration">Duration.</param>
 		public IEnumerator FadeImage(Image target, float duration, Color color, Action callback)
 		{
 			target.gameObject.SetActive(true);
@@ -252,6 +250,8 @@
 				SelectTool("Magnet");
 			if (Input.GetKeyDown(KeyCode.Alpha3))
 				SelectTool("Forceps");
+			if (Input.GetKeyUp(KeyCode.Escape))
+				Application.Quit();
 		}
 
 

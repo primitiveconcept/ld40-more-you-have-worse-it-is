@@ -92,6 +92,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beingDragged: 0
   requiredTool: Forceps
+  pickupSound: {fileID: 8300000, guid: 10ac8ad63d8bb5a4884780f194128540, type: 3}
+  dropSound: {fileID: 8300000, guid: 548603a96c4032c4d9b7fe6ecc1485fb, type: 3}
 --- !u!114 &114646524655550832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -136,7 +138,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: f1c576d23158a8b41ab3d2f1e9e26208, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.353}
   m_FlipX: 0

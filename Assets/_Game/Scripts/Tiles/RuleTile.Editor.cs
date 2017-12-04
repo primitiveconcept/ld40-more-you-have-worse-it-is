@@ -1,4 +1,6 @@
-﻿#if UNITY_EDITOR
+﻿
+#if UNITY_EDITOR
+
 namespace NanoLife
 {
 	using System;
@@ -15,10 +17,6 @@ namespace NanoLife
 	[CanEditMultipleObjects]
 	internal class RuleTileEditor : Editor
 	{
-		const float DefaultElementHeight = 48f;
-		const float LabelWidth = 53f;
-		const float PaddingBetweenRules = 13f;
-		const float SingleLineHeight = 16f;
 		private const string Arrow0 =
 			"iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNWWFMmUAAACYSURBVDhPzZExDoQwDATzE4oU4QXXcgUFj+YxtETwgpMwXuFcwMFSRMVKKwzZcWzhiMg91jtg34XIntkre5EaT7yjjhI9pOD5Mw5k2X/DdUwFr3cQ7Pu23E/BiwXyWSOxrNqx+ewnsayam5OLBtbOGPUM/r93YZL4/dhpR/amwByGFBz170gNChA6w5bQQMqramBTgJ+Z3A58WuWejPCaHQAAAABJRU5ErkJggg==";
 		private const string Arrow1 =
@@ -35,12 +33,16 @@ namespace NanoLife
 			"iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNWWFMmUAAABQSURBVDhPYxh8QNle/T8U/4MKEQdAmsz2eICx6W530gygr2aQBmSMphkZYxqErAEXxusKfAYQ7XyyNMIAsgEkaYQBkAFkaYQBsjXSGDAwAAD193z4luKPrAAAAABJRU5ErkJggg==";
 		private const string Arrow8 =
 			"iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNWWFMmUAAACYSURBVDhPxZE9DoAwCIW9iUOHegJXHRw8tIdx1egJTMSHAeMPaHSR5KVQ+KCkCRF91mdz4VDEWVzXTBgg5U1N5wahjHzXS3iFFVRxAygNVaZxJ6VHGIl2D6oUXP0ijlJuTp724FnID1Lq7uw2QM5+thoKth0N+GGyA7IA3+yM77Ag1e2zkey5gCdAg/h8csy+/89v7E+YkgUntOWeVt2SfAAAAABJRU5ErkJggg==";
+		const float DefaultElementHeight = 48f;
+		const float LabelWidth = 53f;
 		private const string MirrorX =
 			"iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAG1JREFUOE+lj9ENwCAIRB2IFdyRfRiuDSaXAF4MrR9P5eRhHGb2Gxp2oaEjIovTXSrAnPNx6hlgyCZ7o6omOdYOldGIZhAziEmOTSfigLV0RYAB9y9f/7kO8L3WUaQyhCgz0dmCL9CwCw172HgBeyG6oloC8fAAAAAASUVORK5CYII=";
 		private const string MirrorY =
 			"iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAG9JREFUOE+djckNACEMAykoLdAjHbPyw1IOJ0L7mAejjFlm9hspyd77Kk+kBAjPOXcakJIh6QaKyOE0EB5dSPJAiUmOiL8PMVGxugsP/0OOib8vsY8yYwy6gRyC8CB5QIWgCMKBLgRSkikEUr5h6wOPWfMoCYILdgAAAABJRU5ErkJggg==";
+		const float PaddingBetweenRules = 13f;
 		private const string Rotated =
 			"iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAHdJREFUOE+djssNwCAMQxmIFdgx+2S4Vj4YxWlQgcOT8nuG5u5C732Sd3lfLlmPMR4QhXgrTQaimUlA3EtD+CJlBuQ7aUAUMjEAv9gWCQNEPhHJUkYfZ1kEpcxDzioRzGIlr0Qwi0r+Q5rTgM+AAVcygHgt7+HtBZs/2QVWP8ahAAAAAElFTkSuQmCC";
+		const float SingleLineHeight = 16f;
 		private const string XIconString =
 			"iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNWWFMmUAAABoSURBVDhPnY3BDcAgDAOZhS14dP1O0x2C/LBEgiNSHvfwyZabmV0jZRUpq2zi6f0DJwdcQOEdwwDLypF0zHLMa9+NQRxkQ+ACOT2STVw/q8eY1346ZlE54sYAhVhSDrjwFymrSFnD2gTZpls2OvFUHAAAAABJRU5ErkJggg==";
 
@@ -100,11 +102,11 @@ namespace NanoLife
 		public void OnEnable()
 		{
 			if (this.tile.TilingRules == null)
-				this.tile.TilingRules = new List<RuleTile.TilingRule>();
+				this.tile.TilingRules = new List<TilingRule>();
 
 			this.reorderableList = new ReorderableList(
 				this.tile.TilingRules,
-				typeof(RuleTile.TilingRule),
+				typeof(TilingRule),
 				true,
 				true,
 				true,
@@ -204,13 +206,13 @@ namespace NanoLife
 		}
 
 
-		private static void RuleInspectorOnGUI(Rect rect, RuleTile.TilingRule tilingRule)
+		private static void RuleInspectorOnGUI(Rect rect, TilingRule tilingRule)
 		{
 			float y = rect.yMin;
 			EditorGUI.BeginChangeCheck();
 			GUI.Label(new Rect(rect.xMin, y, LabelWidth, SingleLineHeight), "Rule");
 			tilingRule.m_RuleTransform =
-				(RuleTile.TilingRule.Transform)
+				(TilingRule.Transform)
 				EditorGUI.EnumPopup(
 					new Rect(rect.xMin + LabelWidth, y, rect.width - LabelWidth, SingleLineHeight),
 					tilingRule.m_RuleTransform);
@@ -224,13 +226,13 @@ namespace NanoLife
 			y += SingleLineHeight;
 			GUI.Label(new Rect(rect.xMin, y, LabelWidth, SingleLineHeight), "Output");
 			tilingRule.m_Output =
-				(RuleTile.TilingRule.OutputSprite)
+				(TilingRule.OutputSprite)
 				EditorGUI.EnumPopup(
 					new Rect(rect.xMin + LabelWidth, y, rect.width - LabelWidth, SingleLineHeight),
 					tilingRule.m_Output);
 			y += SingleLineHeight;
 
-			if (tilingRule.m_Output == RuleTile.TilingRule.OutputSprite.Animation)
+			if (tilingRule.m_Output == TilingRule.OutputSprite.Animation)
 			{
 				GUI.Label(new Rect(rect.xMin, y, LabelWidth, SingleLineHeight), "Speed");
 				tilingRule.m_AnimationSpeed =
@@ -239,7 +241,7 @@ namespace NanoLife
 						tilingRule.m_AnimationSpeed);
 				y += SingleLineHeight;
 			}
-			if (tilingRule.m_Output == RuleTile.TilingRule.OutputSprite.Random)
+			if (tilingRule.m_Output == TilingRule.OutputSprite.Random)
 			{
 				GUI.Label(new Rect(rect.xMin, y, LabelWidth, SingleLineHeight), "Noise");
 				tilingRule.m_PerlinScale =
@@ -252,14 +254,14 @@ namespace NanoLife
 
 				GUI.Label(new Rect(rect.xMin, y, LabelWidth, SingleLineHeight), "Shuffle");
 				tilingRule.m_RandomTransform =
-					(RuleTile.TilingRule.Transform)
+					(TilingRule.Transform)
 					EditorGUI.EnumPopup(
 						new Rect(rect.xMin + LabelWidth, y, rect.width - LabelWidth, SingleLineHeight),
 						tilingRule.m_RandomTransform);
 				y += SingleLineHeight;
 			}
 
-			if (tilingRule.m_Output != RuleTile.TilingRule.OutputSprite.Single)
+			if (tilingRule.m_Output != TilingRule.OutputSprite.Single)
 			{
 				GUI.Label(new Rect(rect.xMin, y, LabelWidth, SingleLineHeight), "Size");
 				EditorGUI.BeginChangeCheck();
@@ -285,7 +287,7 @@ namespace NanoLife
 		}
 
 
-		private static void RuleMatrixOnGUI(Rect rect, RuleTile.TilingRule tilingRule)
+		private static void RuleMatrixOnGUI(Rect rect, TilingRule tilingRule)
 		{
 			Handles.color = EditorGUIUtility.isProSkin ? new Color(1f, 1f, 1f, 0.2f) : new Color(0f, 0f, 0f, 0.2f);
 			int index = 0;
@@ -314,17 +316,17 @@ namespace NanoLife
 					{
 						switch (tilingRule.m_Neighbors[index])
 						{
-							case RuleTile.TilingRule.Neighbor.This:
+							case TilingRule.Neighbor.This:
 								GUI.DrawTexture(r, Arrows[y * 3 + x]);
 								break;
-							case RuleTile.TilingRule.Neighbor.NotThis:
+							case TilingRule.Neighbor.NotThis:
 								GUI.DrawTexture(r, Arrows[9]);
 								break;
 						}
 						if (Event.current.type == EventType.MouseDown
 							&& r.Contains(Event.current.mousePosition))
 						{
-							tilingRule.m_Neighbors[index] = (RuleTile.TilingRule.Neighbor)(((int)tilingRule.m_Neighbors[index] + 1) % 3);
+							tilingRule.m_Neighbors[index] = (TilingRule.Neighbor)(((int)tilingRule.m_Neighbors[index] + 1) % 3);
 							GUI.changed = true;
 							Event.current.Use();
 						}
@@ -335,13 +337,13 @@ namespace NanoLife
 					{
 						switch (tilingRule.m_RuleTransform)
 						{
-							case RuleTile.TilingRule.Transform.Rotated:
+							case TilingRule.Transform.Rotated:
 								GUI.DrawTexture(r, AutoTransforms[0]);
 								break;
-							case RuleTile.TilingRule.Transform.MirrorX:
+							case TilingRule.Transform.MirrorX:
 								GUI.DrawTexture(r, AutoTransforms[1]);
 								break;
-							case RuleTile.TilingRule.Transform.MirrorY:
+							case TilingRule.Transform.MirrorY:
 								GUI.DrawTexture(r, AutoTransforms[2]);
 								break;
 						}
@@ -349,7 +351,7 @@ namespace NanoLife
 						if (Event.current.type == EventType.MouseDown
 							&& r.Contains(Event.current.mousePosition))
 						{
-							tilingRule.m_RuleTransform = (RuleTile.TilingRule.Transform)(((int)tilingRule.m_RuleTransform + 1) % 4);
+							tilingRule.m_RuleTransform = (TilingRule.Transform)(((int)tilingRule.m_RuleTransform + 1) % 4);
 							GUI.changed = true;
 							Event.current.Use();
 						}
@@ -366,10 +368,10 @@ namespace NanoLife
 			{
 				switch (this.tile.TilingRules[index].m_Output)
 				{
-					case RuleTile.TilingRule.OutputSprite.Random:
+					case TilingRule.OutputSprite.Random:
 						return DefaultElementHeight + SingleLineHeight * (this.tile.TilingRules[index].m_Sprites.Length + 3)
 								+ PaddingBetweenRules;
-					case RuleTile.TilingRule.OutputSprite.Animation:
+					case TilingRule.OutputSprite.Animation:
 						return DefaultElementHeight + SingleLineHeight * (this.tile.TilingRules[index].m_Sprites.Length + 2)
 								+ PaddingBetweenRules;
 				}
@@ -386,7 +388,7 @@ namespace NanoLife
 
 		private void OnDrawElement(Rect rect, int index, bool isactive, bool isfocused)
 		{
-			RuleTile.TilingRule rule = this.tile.TilingRules[index];
+			TilingRule rule = this.tile.TilingRules[index];
 
 			float yPos = rect.yMin + 2f;
 			float height = rect.height - PaddingBetweenRules;
@@ -418,7 +420,7 @@ namespace NanoLife
 		}
 
 
-		private void SpriteOnGUI(Rect rect, RuleTile.TilingRule tilingRule)
+		private void SpriteOnGUI(Rect rect, TilingRule tilingRule)
 		{
 			tilingRule.m_Sprites[0] =
 				EditorGUI.ObjectField(
@@ -432,12 +434,12 @@ namespace NanoLife
 
 		private class MenuItemData
 		{
-			public RuleTile.TilingRule m_Rule;
-			public RuleTile.TilingRule.Transform m_NewValue;
+			public TilingRule m_Rule;
+			public TilingRule.Transform m_NewValue;
 
 
 			#region Constructors
-			public MenuItemData(RuleTile.TilingRule mRule, RuleTile.TilingRule.Transform mNewValue)
+			public MenuItemData(TilingRule mRule, TilingRule.Transform mNewValue)
 			{
 				this.m_Rule = mRule;
 				this.m_NewValue = mNewValue;
@@ -446,4 +448,5 @@ namespace NanoLife
 		}
 	}
 }
+
 #endif

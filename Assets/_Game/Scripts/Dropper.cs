@@ -5,10 +5,12 @@
 
 	public class Dropper : MonoBehaviour
 	{
-		private Camera camera;
+		private new Camera camera;
 		private BrothViewControl[] broths;
 		private Grid grid;
 
+		[SerializeField]
+		private AudioClip dropSound;
 
 		public void Awake()
 		{
@@ -52,6 +54,9 @@
 							}
 						}
 					}
+
+					if (this.dropSound != null)
+						AudioPlayer.Play(this.dropSound);
 				}
 			}
 		}

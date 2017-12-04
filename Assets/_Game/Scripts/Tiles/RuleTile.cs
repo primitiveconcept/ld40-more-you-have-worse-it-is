@@ -16,6 +16,7 @@
 		[SerializeField]
 		private Tile.ColliderType defaultColliderType = Tile.ColliderType.Sprite;
 
+		[SerializeField]
 		private List<TilingRule> tilingRules;
 
 
@@ -70,7 +71,10 @@
 			ITilemap tilemap,
 			ref TileAnimationData tileAnimationData)
 		{
-			foreach (TilingRule rule in this.TilingRules)
+			if (this.tilingRules == null)
+				return false;
+
+			foreach (TilingRule rule in this.tilingRules)
 			{
 				Matrix4x4 transform = Matrix4x4.identity;
 				if (RuleMatches(rule, position, tilemap, ref transform)
@@ -92,7 +96,10 @@
 			tileData.flags = TileFlags.LockTransform;
 			tileData.transform = Matrix4x4.identity;
 
-			foreach (TilingRule rule in this.TilingRules)
+			if (this.tilingRules == null)
+				return;
+
+			foreach (TilingRule rule in this.tilingRules)
 			{
 				Matrix4x4 transform = Matrix4x4.identity;
 				if (RuleMatches(rule, position, tileMap, ref transform))
@@ -124,8 +131,8 @@
 
 		public override void RefreshTile(Vector3Int location, ITilemap tileMap)
 		{
-			if (this.TilingRules != null
-				&& this.TilingRules.Count > 0)
+			if (this.tilingRules != null
+				&& this.tilingRules.Count > 0)
 			{
 				for (int y = -1; y <= 1; y++)
 				{
@@ -261,60 +268,5 @@
 			return result;
 		}
 		#endregion
-
-
-		[Serializable]
-		public class TilingRule
-		{
-			public Neighbor[] m_Neighbors;
-			public Sprite[] m_Sprites;
-			public float m_AnimationSpeed;
-			public float m_PerlinScale;
-			public Transform m_RuleTransform;
-			public OutputSprite m_Output;
-			public Tile.ColliderType m_ColliderType;
-			public Transform m_RandomTransform;
-
-
-			#region Constructors
-			public TilingRule()
-			{
-				this.m_Output = OutputSprite.Single;
-				this.m_Neighbors = new Neighbor[8];
-				this.m_Sprites = new Sprite[1];
-				this.m_AnimationSpeed = 1f;
-				this.m_PerlinScale = 0.5f;
-				this.m_ColliderType = Tile.ColliderType.Sprite;
-
-				for (int i = 0; i < this.m_Neighbors.Length; i++)
-					this.m_Neighbors[i] = Neighbor.DontCare;
-			}
-			#endregion
-
-
-			public enum Neighbor
-			{
-				DontCare,
-				This,
-				NotThis
-			}
-
-
-			public enum OutputSprite
-			{
-				Single,
-				Random,
-				Animation
-			}
-
-
-			public enum Transform
-			{
-				Fixed,
-				Rotated,
-				MirrorX,
-				MirrorY
-			}
-		}
 	}
 }

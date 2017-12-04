@@ -264,7 +264,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.5, y: 7.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 867130902}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -297,7 +298,7 @@ MonoBehaviour:
   panSpeed: 16
   zoomSpeed: 15
   unfocusSpeed: 3
-  refocusSpeed: 0.5
+  refocusSpeed: 0.21
   camera: {fileID: 0}
   effects: {fileID: 0}
 --- !u!1 &277756321
@@ -453,6 +454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4e4fefd047d19438415ac6e4e2656c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropSound: {fileID: 8300000, guid: cc6b4d164411f6743b05c05937c804c5, type: 3}
 --- !u!1 &358162276
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +743,9 @@ MonoBehaviour:
   healthToDivide: 5
   processInterval: 1
   heatGeneration: 0.01
+  divideSound: {fileID: 8300000, guid: ce2857ec2c5bffb40832c72d7dfe8baf, type: 3}
+  deathSound: {fileID: 8300000, guid: ae395c39b1751504aa0431ff5164677d, type: 3}
+  eatSound: {fileID: 8300000, guid: e688b95a58667e74f81a55c635430ea0, type: 3}
   active:
   - {fileID: 524476220}
   broths: []
@@ -1307,7 +1312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   broth: {fileID: 0}
   tilemap: {fileID: 822404767}
-  tile: {fileID: 11400000, guid: 91e595dc0eef5d7498b1f7e0ec5859cd, type: 2}
+  tile: {fileID: 11400000, guid: 16abb4a0d587244479772c2754be61de, type: 2}
   speed: 0.582
 --- !u!114 &822404765
 MonoBehaviour:
@@ -1379,7 +1384,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 2
-      m_ColliderType: 1
+      m_ColliderType: 0
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 1
@@ -1503,6 +1508,127 @@ Tilemap:
   m_TileRefreshArray:
   - serializedVersion: 1
     m_DirtyIndex: 0
+--- !u!1 &867130901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 867130902}
+  - component: {fileID: 867130904}
+  - component: {fileID: 867130903}
+  m_Layer: 0
+  m_Name: AudioPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &867130902
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 867130901}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 208451174}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &867130903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 867130901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db77182a3506b24885ff1479e728c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &867130904
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 867130901}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &912032209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1673,7 +1799,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   broth: {fileID: 0}
   tilemap: {fileID: 1194382986}
-  tile: {fileID: 11400000, guid: 91e595dc0eef5d7498b1f7e0ec5859cd, type: 2}
+  tile: {fileID: 11400000, guid: 16abb4a0d587244479772c2754be61de, type: 2}
   speed: 0.582
 --- !u!114 &1194382984
 MonoBehaviour:
@@ -1722,7 +1848,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
@@ -1745,7 +1871,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 2
-      m_ColliderType: 1
+      m_ColliderType: 0
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 1
@@ -2700,7 +2826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   broth: {fileID: 0}
   tilemap: {fileID: 1827209026}
-  tile: {fileID: 11400000, guid: 91e595dc0eef5d7498b1f7e0ec5859cd, type: 2}
+  tile: {fileID: 11400000, guid: 16abb4a0d587244479772c2754be61de, type: 2}
   speed: 0.582
 --- !u!114 &1827209024
 MonoBehaviour:
@@ -2749,7 +2875,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
@@ -2772,7 +2898,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 2
-      m_ColliderType: 1
+      m_ColliderType: 0
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 1

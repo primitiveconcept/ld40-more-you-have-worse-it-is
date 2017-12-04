@@ -8,7 +8,7 @@
 	{
 		[SerializeField]
 		private int health = 2;
-
+		
 		private Draggable draggable;
 		private Vector3 directionalForce;
 		private new Rigidbody2D rigidbody2D;

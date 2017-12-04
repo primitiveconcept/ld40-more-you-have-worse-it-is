@@ -91,7 +91,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 4
-  draggable: {fileID: 0}
 --- !u!114 &114825290261634234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105,6 +104,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beingDragged: 0
   requiredTool: Magnet
+  pickupSound: {fileID: 8300000, guid: c0e6a9b355908cb4281b84808e349427, type: 3}
+  dropSound: {fileID: 8300000, guid: 84c8d77c4773204468786ed8d985d0bb, type: 3}
 --- !u!212 &212924475687524590
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -23,13 +23,23 @@
 		[SerializeField]
 		private float heatGeneration = 0.1f;
 
+		[Header("Sounds")]
+		[SerializeField]
+		private AudioClip divideSound;
+
+		[SerializeField]
+		private AudioClip deathSound;
+
+		[SerializeField]
+		private AudioClip eatSound;
+
 		[Header("Collections")]
 		[SerializeField]
 		private List<Nanomachine> active;
 
 		[SerializeField]
 		private BrothViewControl[] broths;
-
+		
 		private List<Nanomachine> survivers;
 		private GameSystem gameSystem;
 		private Grid grid;
@@ -81,6 +91,9 @@
 			Destroy(original.gameObject);
 
 			this.gameSystem.AddEnergy(0.05f);
+
+			if (this.divideSound != null)
+				AudioPlayer.Play(this.divideSound);
 		}
 
 
@@ -151,6 +164,9 @@
 				nanomachine.Health--;
 				if (nanomachine.Health < 1)
 				{
+					if (this.deathSound != null)
+						AudioPlayer.Play(this.deathSound);
+
 					Destroy(nanomachine.gameObject);
 					this.active[index] = null;
 					return;
@@ -162,7 +178,9 @@
 				nanomachine.Health += adjacentBacteria[0];
 				Vector3Int cell = this.grid.WorldToCell(nanomachine.transform.position);
 				Debug.Log("Eating: " + cell);
-				//Debug.Break();
+
+				if (this.eatSound != null)
+					AudioPlayer.Play(this.eatSound);
 
 				foreach (BrothViewControl broth in this.broths)
 				{
