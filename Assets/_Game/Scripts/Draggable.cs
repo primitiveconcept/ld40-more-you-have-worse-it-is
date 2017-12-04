@@ -40,8 +40,8 @@
 
 		public void Update()
 		{
-			if (this.gameSystem.CurrentTool != null
-				&& this.gameSystem.CurrentTool.Name != this.requiredTool)
+			if (this.gameSystem.CurrentTool == null
+				|| this.gameSystem.CurrentTool.Name != this.requiredTool)
 			{
 				return;
 			}
@@ -58,8 +58,11 @@
 			if (Input.GetButtonDown("Fire1"))
 			{
 				var hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-				if (hit.collider != null)
+				if (hit.collider != null
+					&& hit.collider.gameObject == this.gameObject)
+				{
 					this.draggedObject = hit.collider.gameObject;
+				}
 			}
 			
 			if (Input.GetButton("Fire1")

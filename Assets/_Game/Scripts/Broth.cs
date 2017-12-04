@@ -13,7 +13,7 @@
 		private bool[,] currentCells;
 		private bool[,] nextCells;
 		private int generation;
-
+		private GameSystem gameSystem;
 
 		#region Properties
 		public int Generation
@@ -49,6 +49,7 @@
 
 			this.currentCells = new bool[this.size, this.size];
 			this.nextCells = new bool[this.size, this.size];
+			this.gameSystem = FindObjectOfType<GameSystem>();
 		}
 
 
@@ -79,6 +80,13 @@
 							&& livingAdjacentCells == 3)
 					{
 						shouldLive = true;
+					}
+
+					if (this.gameSystem.Heat > 1)
+					{
+						var heatDeath = UnityEngine.Random.Range(0, this.gameSystem.Heat + 1);
+						if (heatDeath > 1)
+							shouldLive = false;
 					}
 
 					this.nextCells[x, y] = shouldLive;

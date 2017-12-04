@@ -20,6 +20,9 @@
 		[SerializeField]
 		private float processInterval = 1;
 
+		[SerializeField]
+		private float heatGeneration = 0.1f;
+
 		[Header("Collections")]
 		[SerializeField]
 		private List<Nanomachine> active;
@@ -27,8 +30,8 @@
 		[SerializeField]
 		private BrothViewControl[] broths;
 
-
 		private List<Nanomachine> survivers;
+		private GameSystem gameSystem;
 		private Grid grid;
 		private float timer;
 
@@ -50,7 +53,34 @@
 		public void Awake()
 		{
 			this.broths = FindObjectsOfType<BrothViewControl>();
+			this.gameSystem = FindObjectOfType<GameSystem>();
 			this.grid = this.broths[0].Tilemap.layoutGrid;
+		}
+
+
+		public void CreateNanomachine(Vector3 localPosition)
+		{
+			GameObject newInstance = Instantiate(this.nanomachinePrefab, localPosition, Quaternion.identity);
+			Nanomachine nanomachine = newInstance.GetComponent<Nanomachine>();
+			nanomachine.Health = this.startingHealth;
+			nanomachine.DirectionalForce = nanomachine.transform.localPosition;
+			this.survivers.Add(nanomachine);
+		}
+
+
+		public void DivideNanomachine(Nanomachine original)
+		{
+			int randomDirection = Random.Range(1, 9);
+			Vector3 spawnToPosition = original.transform.localPosition
+									+ Direction.Vector[randomDirection];
+
+			CreateNanomachine(original.transform.localPosition);
+			CreateNanomachine(spawnToPosition);
+			int originalIndex = this.active.IndexOf(original);
+			this.active[originalIndex] = null;
+			Destroy(original.gameObject);
+
+			this.gameSystem.AddEnergy(0.05f);
 		}
 
 
@@ -77,6 +107,13 @@
 
 		private void Process()
 		{
+			if (this.active.Count == 0)
+			{
+				this.gameSystem.ShowGameOver(
+					"Your last nanomachine perished\n\n" +
+					"Game Over");
+			}
+
 			this.survivers = new List<Nanomachine>();
 			for (int i = 0; i < this.active.Count; i++)
 			{
@@ -84,34 +121,21 @@
 					ProcessNanomachine(i, this.active[i].GetAdjacentBacteria(this));
 
 				if (this.active[i] != null)
+				{
 					this.survivers.Add(this.active[i]);
+
+					Vector3Int gridPosition = this.grid.WorldToCell(this.active[i].transform.position);
+					if (gridPosition.x > -1
+						&& gridPosition.x < this.broths[0].Broth.Size
+						&& gridPosition.y > -1
+						&& gridPosition.y < this.broths[0].Broth.Size)
+					{
+						this.gameSystem.AddHeat(this.active[i].Health * this.heatGeneration);
+					}
+				}
 			}
 
 			this.active = this.survivers;
-		}
-
-
-		public void CreateNanomachine(Vector3 localPosition)
-		{
-			var newInstance = Instantiate(this.nanomachinePrefab, localPosition, Quaternion.identity);
-			var nanomachine = newInstance.GetComponent<Nanomachine>();
-			nanomachine.Health = this.startingHealth;
-			nanomachine.DirectionalForce = nanomachine.transform.localPosition;
-			this.survivers.Add(nanomachine);
-		}
-
-
-		public void DivideNanomachine(Nanomachine original)
-		{
-			var randomDirection = UnityEngine.Random.Range(1, 9);
-			var spawnToPosition = original.transform.localPosition
-								+ Direction.Vector[randomDirection];
-
-			CreateNanomachine(original.transform.localPosition);
-			CreateNanomachine(spawnToPosition);
-			var originalIndex = this.active.IndexOf(original);
-			this.active[originalIndex] = null;
-			Destroy(original.gameObject);
 		}
 
 
@@ -135,7 +159,6 @@
 
 			if (adjacentBacteria[0] > 0)
 			{
-
 				nanomachine.Health += adjacentBacteria[0];
 				Vector3Int cell = this.grid.WorldToCell(nanomachine.transform.position);
 				Debug.Log("Eating: " + cell);
@@ -146,7 +169,7 @@
 					broth.Broth[cell.x, cell.y] = false;
 					broth.Broth.NextCells[cell.x, cell.y] = false;
 
-					var maxIndex = broth.Broth.Size - 1;
+					int maxIndex = broth.Broth.Size - 1;
 					if (cell.x > 0)
 					{
 						broth.Broth[cell.x - 1, cell.y] = false;
@@ -170,7 +193,6 @@
 						broth.Broth[cell.x, cell.y + 1] = false;
 						broth.Broth.NextCells[cell.x, cell.y + 1] = false;
 					}
-						
 				}
 
 				if (nanomachine.Health >= this.healthToDivide)

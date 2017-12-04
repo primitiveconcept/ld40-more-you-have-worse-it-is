@@ -55,7 +55,7 @@
 				this.broth = GetComponent<Broth>();
 
 			//this.broth.Randomize();
-			Debug.Log(this.broth);
+			//Debug.Log(this.broth);
 		}
 
 
